@@ -250,7 +250,7 @@ def add_like(message_id):
     user = g.user
     liked = [l.id for l in user.likes]
     liked_messages = Message.query.filter(Message.id.in_(liked)).all()
-
+    
     if message_id in liked:
         like = Likes.query.filter(Likes.user_id == user.id, Likes.message_id == message_id).first()
         db.session.delete(like)
@@ -262,6 +262,19 @@ def add_like(message_id):
     db.session.commit()
 
     return redirect("/")
+
+@app.route('/users/<int:user_id>/likes')
+def users_likes(user_id):
+    """Show list of likes of this user."""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    user = User.query.get_or_404(user_id)
+    liked = [l.id for l in user.likes]
+    liked_messages = Message.query.filter(Message.id.in_(liked)).all()
+    return render_template("/users/likes.html", user=user, liked_messages=liked_messages)
 
 @app.route('/users/delete', methods=["POST"])
 def delete_user():
