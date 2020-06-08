@@ -50,6 +50,7 @@ def do_logout():
 
     if CURR_USER_KEY in session:
         del session[CURR_USER_KEY]
+          
 
 
 @app.route('/signup', methods=["GET", "POST"])
@@ -113,6 +114,10 @@ def logout():
     """Handle logout of user."""
 
     # IMPLEMENT THIS
+    user = User.query.get(session[CURR_USER_KEY])
+    flash(f'Goodbye {user.username}', "info")
+    do_logout()
+    return redirect("/")  
 
 
 ##############################################################################
