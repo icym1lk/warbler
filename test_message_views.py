@@ -15,7 +15,7 @@ from models import db, connect_db, Message, User
 # before we import our app, since that will have already
 # connected to the database
 
-os.environ['DATABASE_URL'] = "postgresql:///warbler-test"
+os.environ['DATABASE_URL'] = "postgresql:///test_db"
 
 
 # Now we can import app
@@ -31,6 +31,14 @@ db.create_all()
 # Don't have WTForms use CSRF at all, since it's a pain to test
 
 app.config['WTF_CSRF_ENABLED'] = False
+
+app.config['SQLALCHEMY_ECHO'] = False
+
+# Make Flask errors be real errors, rather than HTML pages with error info
+app.config['TESTING'] = True
+
+# This is a bit of hack, but don't use Flask DebugToolbar
+app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
 
 
 class MessageViewTestCase(TestCase):
