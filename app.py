@@ -248,6 +248,15 @@ def add_like(message_id):
         return redirect("/")
 
     user = g.user
+    liked = [l.id for l in user.likes]
+    liked_messages = Message.query.filter(Message.id.in_(liked)).all()
+
+    if message_id in liked:
+        like = Likes.query.filter(Likes.user_id == user.id, Likes.message_id == message_id).first()
+        db.session.delete(like)
+        db.session.commit()
+        return redirect("/")
+        
     new_like = Likes(user_id=g.user.id, message_id=message_id)
     db.session.add(new_like)
     db.session.commit()
@@ -334,6 +343,7 @@ def homepage():
     if g.user:
         # get user_id of users being followed and curr_user_id
         following_ids = [f.id for f in g.user.following] + [g.user.id]
+        liked_messages = [l.id for l in g.user.likes]
 
         messages = (Message
                     .query
@@ -342,7 +352,7 @@ def homepage():
                     .limit(100)
                     .all())
 
-        return render_template('home.html', messages=messages)
+        return render_template('home.html', messages=messages, liked_messages=liked_messages)
 
     else:
         return render_template('home-anon.html')
