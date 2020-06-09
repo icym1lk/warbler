@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request, flash, redirect, session, g
+from flask import Flask, render_template, request, flash, redirect, session, g, url_for
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
@@ -66,7 +66,7 @@ def signup():
     """
 
     form = UserAddForm()
-
+    
     if form.validate_on_submit():
         try:
             user = User.signup(
