@@ -11,13 +11,13 @@
 </form> */
 }
 
-$('.like').on('click', async function(evt) {
-	evt.preventDefault();
+// $('.like').on('click', async function(evt) {
+// 	evt.preventDefault();
 
-	let $msg = $(evt.target).closest('form');
-	let msgId = $msg.attr('data-msg-id');
-	// console.log($msg);
-	// console.log(msgId);
+// 	let $msg = $(evt.target).closest('form');
+// 	let msgId = $msg.attr('data-msg-id');
+// 	// console.log($msg);
+// 	// console.log(msgId);
 
-	await axios.post(`/users/add_like/${msgId}`);
-});
+// 	await axios.post(`/users/add_like/${msgId}`);
+// });
